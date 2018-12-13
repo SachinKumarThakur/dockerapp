@@ -2,7 +2,7 @@
 FROM python:3.6.4
 
 # I've install flask
-RUN pip install Flask==1.0.2
+RUN pip install Flask==1.0.2 redis==3.0.1 
 
 # We add a new user admin and create a 
 # home directory for this admin user and

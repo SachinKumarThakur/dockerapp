@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template
 
+import redis
+
 app = Flask(__name__)
 default_key = '1'
 
@@ -7,8 +9,12 @@ default_key = '1'
 # We are using a python dictionary
 # to store all the key value pairs in memory
 # and initialize the dictionary with a single entry.
+redis is the name of the another container which
+we going to connect.
 """
-cache = {default_key: 'one'}
+cache = redis.Redis(host='redis', port=6379, db=0)
+cache.set(default_key,"one")
+# cache = {default_key: 'one'}
 
 
 
@@ -45,7 +51,8 @@ def mainpage():
     the key value pair in our in-memory dictionary
     """
     if request.method == 'POST' and request.form['submit'] == 'save':
-        cache[key] = request.form['cache_value']
+        # cache[key] = request.form['cache_value']
+        cache.set(key, request.form['cache_value'])
 
 
     """
@@ -54,8 +61,10 @@ def mainpage():
     page
     """
     cache_value = None;
-    if key in cache:
-        cache_value = cache[key]
+    # if key in cache:
+    if cache.get(key):
+        # cache_value = cache[key]
+        cache_value = cache.get(key).decode('utf-8')
 
     return render_template('index.html', key=key, cache_value=cache_value)
 
