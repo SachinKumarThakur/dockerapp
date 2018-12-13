@@ -1,4 +1,4 @@
-# We are using python 3.5 like base image
+# We are using python 3.6.4 like base image
 FROM python:3.6.4
 
 # I've install flask
